@@ -19,6 +19,7 @@ public class Player {
 
     public int xCoord;
     public int yCoord;
+    public double score; //JM
 
     public int moveCounter;
     public int i; //JM
@@ -34,6 +35,7 @@ public class Player {
         justAte = false;
         lenght= 1;
         i= 6; //JM
+        score = 0;
 
     }
 
@@ -120,8 +122,10 @@ public class Player {
         handler.getWorld().playerLocation[xCoord][yCoord]=true;
 
 
-        if(handler.getWorld().appleLocation[xCoord][yCoord]){
+        if(handler.getWorld().appleLocation[xCoord][yCoord]){ 
             Eat();
+            score = Math.sqrt(2*score+1); //Score increment. JM 
+            System.out.println(score);
         }
 
         if(!handler.getWorld().body.isEmpty()) {
