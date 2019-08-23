@@ -125,7 +125,7 @@ public class Player {
         if(handler.getWorld().appleLocation[xCoord][yCoord]){ 
             Eat();
             score = Math.sqrt(2*score+1); //Score increment. JM 
-            System.out.println(score);
+            System.out.println("Score: " + score);
         }
 
         if(!handler.getWorld().body.isEmpty()) {
@@ -147,6 +147,9 @@ public class Player {
 
     public void render(Graphics g,Boolean[][] playeLocation){
         Random r = new Random();
+		int fontSize = 40;
+
+       
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
                 g.setColor(Color.WHITE);
@@ -157,8 +160,12 @@ public class Player {
                             handler.getWorld().GridPixelsize,
                             handler.getWorld().GridPixelsize);
                 }
+                
 
             }
+            g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize)); //implemented the score board on screen. This is partial solution.
+    		g.setColor(Color.YELLOW);                                //it's giving problems. JM check this
+    		g.drawString("Score: "+ score, 70, 30);
         }
 
 
