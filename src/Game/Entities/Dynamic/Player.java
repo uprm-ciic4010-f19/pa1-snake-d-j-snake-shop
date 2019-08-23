@@ -19,6 +19,7 @@ public class Player {
     public int yCoord;
 
     public int moveCounter;
+    public int i; //JM
 
     public String direction;//is your first name one?
 
@@ -30,12 +31,13 @@ public class Player {
         direction= "Right";
         justAte = false;
         lenght= 1;
+        i= 6; //JM
 
     }
 
     public void tick(){
         moveCounter++;
-        if(moveCounter>=5) {
+        if(moveCounter>=i) {
             checkCollisionAndMove();
             moveCounter=0;
         }
@@ -47,6 +49,22 @@ public class Player {
             direction="Left";
         }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)){
             direction="Right";
+        }
+        
+        //Phase 2: Adds a piece of tail when you press 'N'. Javier M.
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_N)) {
+        	Tail tail=null;
+			tail=new Tail(xCoord, yCoord, handler);
+			handler.getWorld().body.addLast(tail);
+			handler.getWorld().playerLocation[tail.x][tail.y] = true;
+        }
+        //Phase 2: Increases speed when you press '+' and decreases when '-' is pressed. JM
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_EQUALS)) {
+        	i--;
+        }
+        
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_MINUS)) {
+        	i++;
         }
 
     }
