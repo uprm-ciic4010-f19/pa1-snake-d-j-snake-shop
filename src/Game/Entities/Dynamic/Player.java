@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+import Game.GameStates.State;
+
 /**
  * Created by AlexVR on 7/2/2018.
  */
@@ -41,13 +43,15 @@ public class Player {
             checkCollisionAndMove();
             moveCounter=0;
         }
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP)){
+        
+        //Phase 3: Added the direction condition to prevent backtracking. JM
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP) && direction !="Down"){
             direction="Up";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN)){
+        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_DOWN) && direction != "Up"){
             direction="Down";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT)){
+        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_LEFT) && direction != "Right"){
             direction="Left";
-        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT)){
+        }if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_RIGHT) && direction != "Left"){
             direction="Right";
         }
         
@@ -66,6 +70,12 @@ public class Player {
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_MINUS)) {
         	i++;
         }
+        
+        //Phase 3: Pause State. JM
+        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)){
+        	State.setState(handler.getGame().pauseState);
+        	
+        }
 
     }
 
@@ -77,6 +87,7 @@ public class Player {
             case "Left":
                 if(xCoord==0){
                     kill();
+                    xCoord=handler.getWorld().GridWidthHeightPixelCount-1; //P3: Snake teleports to the opposite side. JM
                 }else{
                     xCoord--;
                 }
@@ -84,6 +95,7 @@ public class Player {
             case "Right":
                 if(xCoord==handler.getWorld().GridWidthHeightPixelCount-1){
                     kill();
+                    xCoord=0; //P3: Snake teleports to the opposite side. JM
                 }else{
                     xCoord++;
                 }
@@ -91,6 +103,7 @@ public class Player {
             case "Up":
                 if(yCoord==0){
                     kill();
+                    yCoord=handler.getWorld().GridWidthHeightPixelCount-1; //P3: Snake teleports to the opposite side. JM
                 }else{
                     yCoord--;
                 }
@@ -98,6 +111,7 @@ public class Player {
             case "Down":
                 if(yCoord==handler.getWorld().GridWidthHeightPixelCount-1){
                     kill();
+                    yCoord=0; //P3: Snake teleports to the opposite side. JM
                 }else{
                     yCoord++;
                 }
@@ -114,6 +128,15 @@ public class Player {
             handler.getWorld().playerLocation[handler.getWorld().body.getLast().x][handler.getWorld().body.getLast().y] = false;
             handler.getWorld().body.removeLast();
             handler.getWorld().body.addFirst(new Tail(x, y,handler));
+            
+            //Sets Game Over when snake collides with itself. JM
+            
+            for (int i = 0; i <handler.getWorld().body.size(); i++) {
+    			if(xCoord==handler.getWorld().body.get(i).x&&yCoord==handler.getWorld().body.get(i).y) {
+    				kill();
+    				State.setState(handler.getGame().gameOverState);
+    			}
+            }
         }
 
     }
