@@ -32,6 +32,7 @@ public class GameSetUp implements Runnable {
 
     private BufferStrategy bs;
     private Graphics g;
+    
 
 
 
@@ -74,6 +75,9 @@ public class GameSetUp implements Runnable {
         display.getFrame().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
+        
+        
+
 
         Images img = new Images();
 
@@ -86,6 +90,7 @@ public class GameSetUp implements Runnable {
         gameOverState = new GameOverState(handler); //JM
 
         State.setState(menuState);
+        
 
         try {
 
@@ -105,6 +110,7 @@ public class GameSetUp implements Runnable {
             e.printStackTrace();
         }
     }
+    
 
     public void reStart(){
         gameState = new GameState(handler);
@@ -186,6 +192,8 @@ public class GameSetUp implements Runnable {
         //End Drawing!
         bs.show();
         g.dispose();
+        
+       
     }
 
     public synchronized void stop(){

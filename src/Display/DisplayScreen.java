@@ -6,6 +6,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import Game.GameStates.State;
+
 /**
  * Created by AlexVR on 7/1/2018.
  */
@@ -13,7 +15,9 @@ import javax.swing.*;
 public class DisplayScreen {
 
     private JFrame frame;
+    private JFrame scoreFrame;
     private Canvas canvas;
+    private Canvas scoreCanvas;
     private String title;
     private int width, height;
 
@@ -35,9 +39,11 @@ public class DisplayScreen {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.setBackground(Color.black);
+        
 
         try {
             frame.setIconImage(ImageIO.read(new File("res/Sheets/icon.png")));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,12 +53,16 @@ public class DisplayScreen {
         canvas.setMaximumSize(new Dimension(width, height));
         canvas.setMinimumSize(new Dimension(width, height));
         canvas.setFocusable(false);
-        canvas.setBackground(Color.black);
+        Color purpleRGB = new Color(128, 0, 128); //Background to purple using RGB coordinates.
+        canvas.setBackground(purpleRGB);
 
         frame.add(canvas);
         frame.pack();
+        
     }
+    
 
+   
     public Canvas getCanvas(){
         return canvas;
     }
@@ -60,5 +70,6 @@ public class DisplayScreen {
     public JFrame getFrame(){
         return frame;
     }
-
+    
+ 
 }

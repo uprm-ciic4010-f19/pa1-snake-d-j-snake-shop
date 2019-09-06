@@ -15,8 +15,8 @@ public class WorldOne extends WorldBase{
         super(handler);
 
         //has to be a number bigger than 20 and even
-        GridWidthHeightPixelCount = 40;
-        GridPixelsize = (800/GridWidthHeightPixelCount);
+        GridWidthHeightPixelCount = 60; //Default was 40. JM
+        GridPixelsize = (780/GridWidthHeightPixelCount); //Default was 800. This changes the grid size. JM Try: 780
         playerLocation = new Boolean[GridWidthHeightPixelCount][GridWidthHeightPixelCount];
         appleLocation = new Boolean[GridWidthHeightPixelCount][GridWidthHeightPixelCount];
 
@@ -49,6 +49,7 @@ public class WorldOne extends WorldBase{
     public void render(Graphics g){
         super.render(g);
         player.render(g,playerLocation);
+       
     }
 
 }

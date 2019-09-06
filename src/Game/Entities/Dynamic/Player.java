@@ -19,10 +19,12 @@ public class Player {
 
     public int xCoord;
     public int yCoord;
-    public double score; //JM
+    public  double score; //JM
 
     public int moveCounter;
     public int i; //JM
+    
+    public boolean appleIsGood; //JM
 
     public String direction;//is your first name one?
 
@@ -34,8 +36,9 @@ public class Player {
         direction= "Right";
         justAte = false;
         lenght= 1;
-        i= 6; //JM
+        i= 10; //JM
         score = 0;
+        appleIsGood = true; //JM
 
     }
 
@@ -78,6 +81,8 @@ public class Player {
         	State.setState(handler.getGame().pauseState);
         	
         }
+        
+        
 
     }
 
@@ -124,8 +129,11 @@ public class Player {
 
         if(handler.getWorld().appleLocation[xCoord][yCoord]){ 
             Eat();
-            score = Math.sqrt(2*score+1); //Score increment. JM 
+         
+            score = Math.sqrt(2*score+1);
             System.out.println("Score: " + score);
+            i -= 1; //My student number ends with 4270, 0 is boring so I used 7 instead. JM 
+   
         }
 
         if(!handler.getWorld().body.isEmpty()) {
@@ -147,12 +155,12 @@ public class Player {
 
     public void render(Graphics g,Boolean[][] playeLocation){
         Random r = new Random();
-		int fontSize = 40;
 
        
         for (int i = 0; i < handler.getWorld().GridWidthHeightPixelCount; i++) {
             for (int j = 0; j < handler.getWorld().GridWidthHeightPixelCount; j++) {
-                g.setColor(Color.WHITE);
+                g.setColor(Color.GREEN);
+                
 
                 if(playeLocation[i][j]||handler.getWorld().appleLocation[i][j]){
                     g.fillRect((i*handler.getWorld().GridPixelsize),
@@ -161,12 +169,15 @@ public class Player {
                             handler.getWorld().GridPixelsize);
                 }
                 
-
+              
             }
-            g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize)); //implemented the score board on screen. This is partial solution.
-    		g.setColor(Color.YELLOW);                                //it's giving problems. JM check this
-    		g.drawString("Score: "+ score, 70, 30);
+
         }
+       
+        g.setFont(new Font("ComicSans", Font.ROMAN_BASELINE, 40)); //implemented the score board on screen. JM
+ 		g.setColor(Color.YELLOW);                                
+ 		g.drawString("Score: "+ handler.getWorld().player.score, 70, 30);
+        
 
 
     }
@@ -206,6 +217,7 @@ public class Player {
                 if( handler.getWorld().body.isEmpty()){
                     if(this.xCoord!=0){
                         tail=new Tail(this.xCoord-1,this.yCoord,handler);
+                    	
                     }else{
                         if(this.yCoord!=0){
                             tail=new Tail(this.xCoord,this.yCoord-1,handler);
