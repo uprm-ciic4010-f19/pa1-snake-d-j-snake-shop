@@ -14,8 +14,6 @@ public class Apple {
 
 	public int xCoord;
 	public int yCoord;
-//	public boolean appleIsGood = true;
-//	public boolean appleIsBad = false; //New variable to test if the apple is a bad one Dilan Rios
 	public double score;
 	public double decrease;
 	private Player player;
@@ -27,17 +25,18 @@ public class Apple {
 		this.handler=handler;
 		this.xCoord=x;
 		this.yCoord=y;
+		
 	}
 
 
 
+
 	public boolean isGood() {
-//		System.out.println((handler.getWorld().player.moveCounter));
-		if (handler.getWorld().player.stepCounter > 55) {
+		if (handler.getWorld().player.stepCounter >= 55) {
 			return false;
+		} else {
+			return true;
 		}
-		
-		return true;
 
 	}
 }

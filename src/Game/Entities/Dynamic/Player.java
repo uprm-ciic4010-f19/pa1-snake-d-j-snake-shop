@@ -23,12 +23,13 @@ public class Player {
 
 	public int moveCounter;
 	public int stepCounter;
-	
+
 	public int i; //JM
 
 	public boolean appleIsGood; //JM
 
 	public String direction;//is your first name one?
+	private Tail block;
 
 	public Player(Handler handler){
 		this.handler = handler;
@@ -51,7 +52,7 @@ public class Player {
 			checkCollisionAndMove();
 			stepCounter++;
 			moveCounter=0;
-			
+
 		}
 		//Phase 3: Added the direction condition to prevent backtracking. JM
 		if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_UP) && direction !="Down"){
@@ -87,9 +88,10 @@ public class Player {
 		}
 
 
-		
 
-		
+
+
+
 
 	}
 
@@ -136,18 +138,10 @@ public class Player {
 
 		if(handler.getWorld().appleLocation[xCoord][yCoord]){ 
 			Eat();
-			
-			if (stepCounter >= 55 && getJustAte()) {
-				score += Math.sqrt(2 * score + 1);
-			} else {
-				score -= Math.sqrt(2 * score + 1);
 
-			}
-			
-			setJustAte(true);
-			System.out.println("Score: " + score);
+			System.out.println("Score: " + (int) score);
 			i -= 1; //My student number ends with 4270, 0 is boring so I used 7 instead. JM 
-			
+
 
 		}
 
@@ -167,8 +161,7 @@ public class Player {
 
 
 		}
-		
-		setJustAte(false);
+
 
 	}
 
@@ -188,16 +181,12 @@ public class Player {
 							handler.getWorld().GridPixelsize);
 				}
 				if (handler.getWorld().appleLocation[i][j]) {
-					if(!handler.getWorld().apple.isGood()) {
+					if(handler.getWorld().apple.isGood()) {
 
 						g.setColor(Color.green);
 
 					} else {
 						g.setColor(Color.red);
-						if (getJustAte()) {
-							handler.getWorld().body.remove(handler.getWorld().body.getLast());
-						}
-
 					}	
 
 					g.fillRect((i*handler.getWorld().GridPixelsize),
@@ -216,7 +205,7 @@ public class Player {
 
 		g.setFont(new Font("ComicSans", Font.ROMAN_BASELINE, 40)); //implemented the score board on screen. JM
 		g.setColor(Color.YELLOW);                                
-		g.drawString("Score: "+ handler.getWorld().player.score, 70, 30);
+		g.drawString("Score: "+ (int) handler.getWorld().player.score, 70, 30);
 
 
 
@@ -227,9 +216,10 @@ public class Player {
 		Tail tail= null;
 		handler.getWorld().appleLocation[xCoord][yCoord]=false;
 		handler.getWorld().appleOnBoard=false;
+
 		switch (direction){
 		case "Left":
-			if( handler.getWorld().body.isEmpty()){
+			if(handler.getWorld().body.isEmpty()){
 				if(this.xCoord!=handler.getWorld().GridWidthHeightPixelCount-1){
 					tail = new Tail(this.xCoord+1,this.yCoord,handler);
 				}else{
@@ -325,12 +315,32 @@ public class Player {
 				}
 
 			}
+
 			break;
 		}
-		handler.getWorld().body.addLast(tail);
+		
+		if (handler.getWorld().apple.isGood()) {
+			handler.getWorld().body.addLast(tail);
+			score += Math.sqrt(2 * score + 1);
+		}else {
+			if (handler.getWorld().body.size() < 1) {
+				State.setState(handler.getGame().gameOverState);
+			} else {
+				handler.getWorld().body.removeLast();
+				score -= Math.sqrt(2 * score + 1);
+				if (score < 0) {
+					State.setState(handler.getGame().gameOverState);
+					System.out.println("Score Went Negative! Try Again!");
+				}
+			}
+		}
 		handler.getWorld().playerLocation[tail.x][tail.y] = true;
 		stepCounter = 0;
+
+
 	}
+
+
 
 	public void kill(){
 		lenght = 0;
