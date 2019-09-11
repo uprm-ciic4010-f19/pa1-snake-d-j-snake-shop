@@ -31,7 +31,7 @@ public class Images {
 
         try {
 
-            title = ImageIO.read(getClass().getResourceAsStream("/Sheets/Title.png"));
+            title = ImageIO.read(getClass().getResourceAsStream("/Sheets/JavaSnake.png"));
             Pause = ImageIO.read(getClass().getResourceAsStream("/Buttons/Pause.png"));
             GameOver = ImageIO.read(getClass().getResourceAsStream("/Buttons/gameover.png")); //JM
             Restart[0] = ImageIO.read(getClass().getResourceAsStream("/Buttons/restart.png")); //JM
